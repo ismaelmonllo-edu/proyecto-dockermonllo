@@ -1,0 +1,4 @@
+zone "monllo.local" {
+    type master;
+    file "/etc/bind/zones/db.monllo.local";
+};

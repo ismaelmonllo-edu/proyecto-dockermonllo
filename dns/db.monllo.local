@@ -1,0 +1,13 @@
+$TTL    604800
+@       IN      SOA     ns.monllo.local. admin.monllo.local. (
+                              3         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      ns.monllo.local.
+@       IN      A       172.25.0.3
+ns      IN      A       172.25.0.2
+web     IN      A       172.25.0.3
+www     IN      A       172.25.0.3
