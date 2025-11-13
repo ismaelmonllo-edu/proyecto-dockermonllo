@@ -10,8 +10,8 @@ services:
       - ./dns/named.conf.local:/etc/bind/named.conf.local
       - ./dns/db.monllo.local:/etc/bind/zones/db.monllo.local
     networks:
-    red-monllo:
-    ipv4_address: 172.25.0.2
+      red-monllo:
+        ipv4_address: 172.25.0.2
     restart: unless-stopped
   web:
     image: nginx:latest
