@@ -1,0 +1,132 @@
+================================================================================
+DOCUMENTACION TECNICA - DESPLIEGUE PROYECTO MONLLO.LOCAL
+================================================================================
+
+QUE SE HA DESPLEGADO
+--------------------
+Un sitio web con dominio propio (monllo.local) usando Docker, con:
+- Servidor DNS propio
+- Servidor web con HTTPS
+- Certificados SSL
+
+
+COMPONENTES
+-----------
+
+1. SERVIDOR DNS (BIND9)
+   - Contenedor: dns-server
+   - Puerto: 53
+   - IP: 172.25.0.2
+   - Funcion: Resolver el dominio monllo.local y sus subdominios
+
+2. SERVIDOR WEB (NGINX)
+   - Contenedor: web-server
+   - Puertos: 80 (HTTP) y 443 (HTTPS)
+   - IP: 172.25.0.3
+   - Funcion: Servir la pagina web con SSL
+
+3. RED DOCKER
+   - Nombre: red-monllo
+   - Rango: 172.25.0.0/16
+
+
+DOMINIOS CONFIGURADOS
+----------------------
+- monllo.local
+- www.monllo.local
+- web.monllo.local
+
+Todos apuntan a 127.0.0.1 (localhost)
+
+
+CERTIFICADOS SSL
+----------------
+- Ubicacion: ./ssl/
+- Tipo: Autofirmados
+- Archivos:
+  * cert.pem (certificado)
+  * key.pem (clave privada)
+- Protocolos: TLSv1.2 y TLSv1.3
+
+
+ESTRUCTURA DE ARCHIVOS
+-----------------------
+PROYECTO/
+├── docker-compose.yml      (configuracion de contenedores)
+├── dns/
+│   ├── named.conf.local    (configuracion zona DNS)
+│   └── db.monllo.local     (registros DNS)
+├── nginx/
+│   ├── nginx.conf          (configuracion servidor web)
+│   └── www/
+│       └── index.html      (pagina web)
+└── ssl/
+    ├── cert.pem            (certificado SSL)
+    └── key.pem             (clave privada)
+
+
+COMO USAR
+---------
+
+1. Arrancar el proyecto:
+   docker-compose up -d
+
+2. Parar el proyecto:
+   docker-compose down
+
+3. Ver estado:
+   docker-compose ps
+
+4. Ver logs:
+   docker-compose logs
+
+
+ACCESO AL SITIO WEB
+--------------------
+Despues de arrancar los contenedores, acceder desde el navegador a:
+- http://monllo.local (redirige a HTTPS)
+- https://monllo.local
+- https://www.monllo.local
+
+NOTA: El navegador mostrara advertencia de seguridad porque el certificado
+      es autofirmado. Es normal, aceptar la excepcion para continuar.
+
+
+CONFIGURACION DEL SISTEMA
+--------------------------
+Para que funcione el DNS local, configurar el sistema operativo para usar
+el servidor DNS en 127.0.0.1 o añadir en el archivo hosts:
+
+Windows: C:\Windows\System32\drivers\etc\hosts
+Linux/Mac: /etc/hosts
+
+Añadir:
+127.0.0.1  monllo.local
+127.0.0.1  www.monllo.local
+127.0.0.1  web.monllo.local
+
+
+CARACTERISTICAS DE SEGURIDAD
+-----------------------------
+- HTTPS habilitado con redireccion automatica desde HTTP
+- Protocolos seguros: TLSv1.2 y TLSv1.3
+- Cifrados fuertes configurados
+- Certificados SSL (autofirmados para desarrollo)
+
+
+PUERTOS UTILIZADOS
+------------------
+53  - DNS (TCP/UDP)
+80  - HTTP
+443 - HTTPS
+
+
+REINICIO AUTOMATICO
+--------------------
+Ambos contenedores estan configurados con "restart: unless-stopped"
+Se reinician automaticamente si fallan o si se reinicia el sistema.
+
+
+================================================================================
+FIN DE LA DOCUMENTACION
+================================================================================
